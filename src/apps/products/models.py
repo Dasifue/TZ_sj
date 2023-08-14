@@ -23,7 +23,17 @@ class Tag(models.Model):
         return self.name
 
 
+class ProductImages(models.Model):
+    image = models.ImageField("Image", upload_to="images/product/", default="/default/default_product.jpeg")
+    date = models.DateField("Date", auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Product Image"
+        verbose_name_plural = "Product Images"
+    
+
 class Product(models.Model):
+    images = models.ManyToManyField(ProductImages, related_name="products")
     category_id = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="products", null=True)
     tags = models.ManyToManyField(Tag, related_name="products")
     name = models.CharField("Name", max_length=100)
